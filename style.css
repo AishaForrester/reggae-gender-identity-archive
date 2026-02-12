@@ -1,0 +1,118 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Georgia, serif;
+
+  background-image: url(imgs/bg2.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  
+  
+}
+
+
+.controls {
+  position: fixed;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#book {
+  width: 1200px;
+  height: 700px;
+  perspective: 1500px; /* higher value = less extreme, lower = more 3D */
+  
+  
+  
+}
+
+/*This tiny rotation gives subtle 3D depth when viewing the two-page spread*/
+#book .page:nth-child(even) {
+  transform: rotateY(2deg);
+}
+
+#book .page:nth-child(odd) {
+  transform: rotateY(-2deg);
+}
+
+
+.page {
+  /*background: #fffdf7;*/
+  padding: 40px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  border: 1 px solid #ddd;
+  transform-style: preserve-3d;
+
+ background-image: url('imgs/pagecolor2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+.cover {
+  /*background: #3a1f1f;*/
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  /*justify-content: space-between;*/
+
+
+  background-image: url(imgs/b8c.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4); /* dark overlay */
+  z-index: 0;
+}
+.cover-text {
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+.cover-text2 {
+    margin-top: 300px;
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+h1, h2 {
+  margin-bottom: 15px;
+}
+
+.lyrics {
+  font-style: italic;
+  margin: 15px 0;
+}
