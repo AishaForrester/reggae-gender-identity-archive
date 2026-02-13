@@ -12,7 +12,16 @@ body {
   overflow: hidden;
   font-family: Georgia, serif;
 
-  background-image: url(imgs/bg2.png);
+  
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.2) 0%,
+      rgba(0,0,0,0.7) 100%
+    ),
+    url(imgs/bg2.png);
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -24,25 +33,101 @@ body {
 
 .controls {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px;
   text-align: center;
   width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
 .controls button {
+  margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 5px;
+  width: 150px;
+  height: 50px;
+}
+button:hover {
+  background-color: rgba(255, 255, 255, 1);
 }
 
 #book {
   width: 1200px;
-  height: 700px;
-  perspective: 1500px; /* higher value = less extreme, lower = more 3D */
-  
-  
+  height: 600px;
+  overflow: visible !important;
+
+  transform: rotateX(2deg);
+
+  /* border-radius: 14px; */
+
+  box-shadow:
+    0 25px 50px rgba(0,0,0,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.15);
   
 }
+
+/*#book::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: -10px;
+  width: 20px;
+  height: 98%;
+
+  background: repeating-linear-gradient(
+    to bottom,
+    #7a3c3c 0%,
+    #4b2323 55%,
+    #1a0b0b 100%
+  );
+
+  border-radius: 0 10px 10px 0;
+  box-shadow: inset -3px 0 6px rgba(0,0,0,0.2);
+}*/
+
+#book-wrapper {
+  position: relative;
+  width: 1200px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+#book-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 30px;
+  height: 100%;
+
+  background: radial-gradient(
+    ellipse at center,
+    #7a3c3c 0%,
+    #4b2323 55%,
+    #1a0b0b 100%
+  );
+
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 40px rgba(0,0,0,0.85),
+    0 0 20px rgba(0,0,0,0.45);
+
+  z-index: -2;
+  pointer-events: none;
+}
+
+
+
 
 /*This tiny rotation gives subtle 3D depth when viewing the two-page spread*/
 #book .page:nth-child(even) {
@@ -57,9 +142,16 @@ body {
 .page {
   /*background: #fffdf7;*/
   padding: 40px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-  border-radius: 10px;
-  border: 1 px solid #ddd;
+  /*border-radius: 12px;*/
+
+  /* softer paper-like border */
+  
+  
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.18),
+    inset 0 0 12px rgba(0,0,0,0.06);
+  
+  /*border: 1 px solid #ddd;*/
   transform-style: preserve-3d;
 
  background-image: url('imgs/pagecolor2.png');
@@ -68,22 +160,53 @@ body {
   background-repeat: no-repeat;
 
 }
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  opacity: 0.15;
+
+  pointer-events: none;
+}
+
+
+.page::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.18), transparent);
+  pointer-events: none;
+}
+
+
 
 .cover {
-  /*background: #3a1f1f;*/
+  background: #3a1f1f;
+  
+  box-shadow:
+    inset 0 0 0 3px rgba(74, 44, 44, 0.12),
+    inset 0 0 40px rgba(0,0,0,0.35),
+    0 18px 40px rgba(0,0,0,0.45);
+
   width: 100%;
   height: 100%;
   color: white;
   text-align: center;
   display: flex;
   flex-direction: column;
+  
   /*justify-content: space-between;*/
 
 
-  background-image: url(imgs/b8c.png);
+  /*background-image: url(imgs/b8c.png);
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat;*/
   
 }
 .cover::before {
@@ -93,8 +216,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4); /* dark overlay */
+  background: rgba(0,0,0,0.1); /* dark overlay */
   z-index: 0;
+ 
 }
 .cover-text {
   position: relative;

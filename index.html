@@ -8,12 +8,14 @@
 </head>
 <body>
 
-    <div class="controls">
-        <button onclick="$('#book').turn('previous')">⬅ Previous</button>
-        <button onclick="$('#book').turn('next')">Next ➡</button>
-    </div>
     
+    <div class="controls">
+  <button class="prev">⬅ Previous</button>
+  <button class="next">Next ➡</button>
+</div>
 
+    
+<div id="book-wrapper">
     <div id="book">
 
     <!-- Cover -->
@@ -68,6 +70,11 @@
     <p>
       [500–800 word poetic critique]
     </p>
+
+     <!-- Audio hidden, autoplay via JS -->
+    <audio id="no-woman-audio">
+        <source src="audioFiles/Bob Marley - No Woman No Cry (Lyrics).mp3" type="audio/mpeg">
+    </audio>
   </div>
 
   <!-- Conclusion -->
@@ -87,6 +94,7 @@
     </ul>
   </div>
 
+</div>
 </div>
 
 
