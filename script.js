@@ -10,61 +10,61 @@ $(document).ready(function () {
     easing: "easeInOutCubic"
   });
 
-  // When a page turns
-  $("#book").bind("turned", function(event, page, view) {
-    // Stop all audio first
-    $("audio").each(function() {
-      this.pause();
-      this.currentTime = 0;
-    });
+  
+   
+let currentAudio = null;
 
-    // If it's the "No Woman No Cry" page, play its audio
-    if (page === 4) { // page number starts at 1, where the cover is one. 
-      $("#no-woman-audio")[0].play();
+$("#book").bind("turned", function(event, page, view) {
+  console.log("Turned to page: " + page);
+  document.title = "Page: " + page; // Update the document title for debugging
+
+  let newAudio = null;
+
+  if (page >= 6 && page <= 8)   newAudio = $("#got-a-date-audio")[0];
+  else if (page >= 10 && page <= 14) newAudio = $("#no-woman-audio")[0];
+  else if (page >= 16 && page <= 20) newAudio = $("#mother-liza-audio")[0];
+  else if (page >= 22 && page <= 26) newAudio = $("#girlie-girlie-audio")[0];
+  else if (page >= 28 && page <= 34) newAudio = $("#sycamore-audio")[0];
+  else if (page >= 36 && page <= 42) newAudio = $("#its-a-pity-audio")[0];
+  else if (page >= 44 && page <= 48) newAudio = $("#majesty-audio")[0];
+  else if (page >= 50 && page <= 54) newAudio = $("#toast-audio")[0];
+
+  // Only change audio if it's different
+  if (newAudio !== currentAudio) {
+
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
     }
-  });
 
+    currentAudio = newAudio;
 
-  // Automatic turn to page 2 on load
-  setTimeout(() => {
-    $("#book").turn("page", 2, 900);
+    if (currentAudio) {
+      currentAudio.play();
+    }
+  }
+
+});
+
+  
+
+  // Auto-open to page 2 on load (just pass the page number — no duration arg)
+  setTimeout(function () {
+    $("#book").turn("page", 2);
   }, 1200);
 
-  // Function to add a subtle wobble after page turn
-  function addWobble() {
-    const book = $("#book");
-    // quick small rotation to simulate curl
-    book.css({ transform: "rotateY(0deg)" });
-    setTimeout(() => {
-      book.css({ transform: "rotateY(1deg)" });
-      setTimeout(() => {
-        book.css({ transform: "rotateY(0deg)" });
-      }, 150);
-    }, 150);
-  }
+  // next() and previous() take no arguments in Turn.js
+  $(".controls button.next").on("click", function () {
+    $("#book").turn("next");
+  });
 
-  // Graceful next/previous page functions with wobble
-  function nextPage() {
-    $("#book").turn("next", {
-      duration: 900,
-      easing: "easeInOutCubic",
-      when: {
-        turned: addWobble
-      }
-    });
-  }
+  $(".controls button.prev").on("click", function () {
+    $("#book").turn("previous");
+  });
 
-  function prevPage() {
-    $("#book").turn("previous", {
-      duration: 900,
-      easing: "easeInOutCubic",
-      when: {
-        turned: addWobble
-      }
-    });
-  }
-
-  // Attach buttons
-  $(".controls button.prev").on("click", prevPage);
-  $(".controls button.next").on("click", nextPage);
 });
+
+
+ 
+
+

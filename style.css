@@ -1,94 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html, body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
+
 body {
   display: flex;
+  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
   height: 100vh;
   overflow: hidden;
-  font-family: Georgia, serif;
-
-  
+  font-family: 'EB Garamond', Georgia, serif;
 
   background:
     linear-gradient(
       to bottom,
-      rgba(0,0,0,0.2) 0%,
-      rgba(0,0,0,0.7) 100%
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.72) 100%
     ),
     url(imgs/bg2.png);
 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
-  
-  
 }
 
+/* ─── Controls ──────────────────────────────────────────────── */
 
 .controls {
   position: fixed;
-  bottom: 10px;
-  text-align: center;
+  bottom: 24px;
   width: 100%;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
+  z-index: 100;
 }
 
 .controls button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px 28px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: none;
-  border-radius: 5px;
-  width: 150px;
-  height: 50px;
-}
-button:hover {
-  background-color: rgba(255, 255, 255, 1);
-}
-
-#book {
-  width: 1200px;
-  height: 600px;
-  overflow: visible !important;
-
-  transform: rotateX(2deg);
-
-  /* border-radius: 14px; */
-
-  box-shadow:
-    0 25px 50px rgba(0,0,0,0.35),
-    inset 0 0 0 1px rgba(255,255,255,0.15);
-  
+  background: rgba(255, 252, 245, 0.88);
+  border: 1px solid rgba(120, 80, 50, 0.35);
+  border-radius: 3px;
+  color: #3a1f1f;
+  min-width: 140px;
+  height: 46px;
+  backdrop-filter: blur(6px);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.22);
 }
 
-/*#book::after {
-  content: "";
-  position: absolute;
-  top: 6px;
-  right: -10px;
-  width: 20px;
-  height: 98%;
+.controls button:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+}
 
-  background: repeating-linear-gradient(
-    to bottom,
-    #7a3c3c 0%,
-    #4b2323 55%,
-    #1a0b0b 100%
-  );
-
-  border-radius: 0 10px 10px 0;
-  box-shadow: inset -3px 0 6px rgba(0,0,0,0.2);
-}*/
+/* ─── Book Wrapper ──────────────────────────────────────────── */
 
 #book-wrapper {
   position: relative;
@@ -97,146 +76,230 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1000px;
+  perspective: 1800px;
 }
 
+
+/* Spine accent */
 #book-wrapper::before {
   content: "";
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-
-  width: 30px;
+  width: 28px;
   height: 100%;
-
-  background: radial-gradient(
-    ellipse at center,
-    #7a3c3c 0%,
-    #4b2323 55%,
+  background: linear-gradient(
+    to right,
+    #1a0b0b 0%,
+    #4b2323 30%,
+    #7a3c3c 50%,
+    #4b2323 70%,
     #1a0b0b 100%
   );
-
-  border-radius: 20px;
+  border-radius: 4px;
   box-shadow:
-    inset 0 0 40px rgba(0,0,0,0.85),
-    0 0 20px rgba(0,0,0,0.45);
-
-  z-index: -2;
+    inset 0 0 30px rgba(0, 0, 0, 0.8),
+    0 0 18px rgba(0, 0, 0, 0.5);
+  z-index: 0;
   pointer-events: none;
 }
 
-
-
-
-/*This tiny rotation gives subtle 3D depth when viewing the two-page spread*/
-#book .page:nth-child(even) {
-  transform: rotateY(2deg);
+/* Drop shadow beneath the book */
+#book-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-#book .page:nth-child(odd) {
-  transform: rotateY(-2deg);
+/* ─── Book Element ──────────────────────────────────────────── */
+
+#book {
+  width: 1200px;
+  height: 600px;
+  /* IMPORTANT: Do NOT use overflow: visible — it causes background bleed-through */
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
+/* ─── Pages ─────────────────────────────────────────────────── */
 
 .page {
-  /*background: #fffdf7;*/
-  padding: 40px;
-  /*border-radius: 12px;*/
+  position: relative; /* REQUIRED for ::before / ::after to clip correctly */
+  overflow: hidden;   /* Clips all pseudo-elements to the page boundary — fixes the slits */
+  padding-left: 15px;
+  
 
-  /* softer paper-like border */
-  
-  
-  box-shadow:
-    0 8px 18px rgba(0,0,0,0.18),
-    inset 0 0 12px rgba(0,0,0,0.06);
-  
-  /*border: 1 px solid #ddd;*/
-  transform-style: preserve-3d;
-
- background-image: url('imgs/pagecolor2.png');
+  background-color: #fdf8f0; /* solid fallback */
+  background-image: url('imgs/pagecolor2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
+  box-shadow:
+    inset 2px 0 6px rgba(0, 0, 0, 0.08),
+    inset -2px 0 6px rgba(0, 0, 0, 0.05);
 }
+
+
+/* Paper fiber texture overlay */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
-
   background: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
-  opacity: 0.15;
-
+  opacity: 0.12;
   pointer-events: none;
+  z-index: 1;
 }
 
-
+/* Inner gutter shadow (left edge only) — no more full-height "slits" */
 .page::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 25px;
+  width: 28px;
   height: 100%;
-  background: linear-gradient(to right, rgba(0,0,0,0.18), transparent);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.13), transparent);
   pointer-events: none;
+  z-index: 2;
 }
 
+/* Ensure all page content sits above the texture overlays */
+.page > * {
+  position: relative;
+  z-index: 3;
+}
 
+/* Subtle alternating depth — keep very small to avoid distortion */
+#book .page:nth-child(even) {
+  /* intentionally removed rotateY to prevent visible gaps at spine */
+}
+#book .page:nth-child(odd) {
+  /* intentionally removed rotateY */
+}
+
+/* ─── Cover ─────────────────────────────────────────────────── */
 
 .cover {
-  background: #3a1f1f;
-  
-  box-shadow:
-    inset 0 0 0 3px rgba(74, 44, 44, 0.12),
-    inset 0 0 40px rgba(0,0,0,0.35),
-    0 18px 40px rgba(0,0,0,0.45);
-
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100%;
+  background-color: #2b1111;
+  background-image:
+    linear-gradient(160deg, rgba(100, 40, 40, 0.55) 0%, rgba(20, 8, 8, 0.85) 100%);
   color: white;
   text-align: center;
   display: flex;
   flex-direction: column;
-  
-  /*justify-content: space-between;*/
 
-
-  /*background-image: url(imgs/b8c.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;*/
-  
+  box-shadow:
+    inset 0 0 0 2px rgba(180, 120, 80, 0.18),
+    inset 0 0 60px rgba(0, 0, 0, 0.55),
+    0 20px 50px rgba(0, 0, 0, 0.5);
 }
+
+/* Decorative gold border inset on cover */
 .cover::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.1); /* dark overlay */
-  z-index: 0;
- 
-}
-.cover-text {
-  position: relative;
+  inset: 14px;
+  border: 1px solid rgba(200, 160, 90, 0.28);
+  pointer-events: none;
   z-index: 1;
-  color: white;
-}
-.cover-text2 {
-    margin-top: 300px;
-    position: relative;
-    z-index: 1;
-    color: white;
 }
 
-h1, h2 {
-  margin-bottom: 15px;
+.cover-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding-top: 80px;
+}
+
+.cover-text h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+  margin-bottom: 10px;
+}
+
+.cover-text h3 {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.12em;
+  color: rgba(255, 230, 180, 0.85);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.cover-text p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 220, 160, 0.65);
+}
+
+.cover-text2 {
+  margin-top: auto;
+  padding-bottom: 48px;
+  position: relative;
+  z-index: 2;
+  color: rgba(255, 210, 150, 0.75);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+}
+
+/* ─── Typography ─────────────────────────────────────────────── */
+
+h1, h2, h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #2e1810;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(100, 60, 30, 0.18);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 0.97rem;
+  line-height: 1.72;
+  color: #2a1a10;
+}
+
+ul {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 0.97rem;
+  color: #2a1a10;
+  line-height: 2;
+  padding-left: 20px;
 }
 
 .lyrics {
   font-style: italic;
-  margin: 15px 0;
+  margin: 10px 0;
+  font-size: 0.93rem;
+  line-height: 1.8;
+  color: #3a2010;
 }
